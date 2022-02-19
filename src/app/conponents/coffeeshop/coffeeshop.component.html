@@ -1,0 +1,66 @@
+<form [formGroup]="form">
+  <hr>
+  <div class="form-group">
+    <label>Name : </label>
+    <input type="text" [(ngModel)]="formObj.name" formControlName="name" [readonly]="!bill">
+    <div class="alert alert-danger">
+      <span style="color: red;" *ngIf="form.get('name')?.errors?.['required']">Name is required.</span>
+    </div>
+  </div>
+  <div class="form-group">
+    <label>Email : </label>
+    <input type="text" [(ngModel)]="formObj.email" formControlName="email" [readonly]="!bill">
+    <div class="alert alert-danger">
+      <span style="color: red;" *ngIf="form.get('email')?.errors?.['required']">Email is required.</span>
+      <span style="color: red;" *ngIf="form.get('email')?.errors?.['email']">Email is required.</span>
+    </div>
+  </div>
+  <div class="form-group">
+    <label>Phone : </label>
+    <input type="text" [(ngModel)]="formObj.phone" formControlName="phone" minlength="10" maxlength="10" [readonly]="!bill">
+    <div class="alert alert-danger">
+      <span style="color: red;" *ngIf="form.get('phone')?.errors?.['required']">Phone is required.</span>
+      <span style="color: red;" *ngIf="form.get('phone')?.errors?.['pattern']">Number 10 digits</span>
+    </div>
+  </div>
+  <div class="form-group">
+    <select class="form-control" [(ngModel)]="formObj.drink" formControlName="drink" >
+      <option value="" selected hidden>What would you like to drink?</option>
+      <option *ngFor="let s of products" [value]="s.name">{{s.name}}</option>
+    </select>
+    <span style="color: red;padding-left:1rem" *ngIf="form.get('drink')?.errors?.['required']">*Drink is required.</span>
+  </div>
+  <div class="form-group-check">
+    <div>Hot or cold?  <span style="color: red;" *ngIf="form.get('tempPreference')?.errors?.['required']">( Required )</span></div>
+    <div>
+       <input type="radio" id="hot" name="tempPreference" value="hot" [(ngModel)]="formObj.tempPreference" formControlName="tempPreference">
+       <label for="hot">Hot</label><br>
+
+
+       <input type="radio" id="cold" name="tempPreference" value="cold" [(ngModel)]="formObj.tempPreference" formControlName="tempPreference">
+       <label for="cold">Cold</label><br>
+
+
+       <input type="checkbox" id="OR" name="OrderReady" value="true" [(ngModel)]="formObj.sendText" formControlName="sendText">
+       <label for="OR">Send me a text message when my order is ready.</label><br>
+      <div style="margin-left:2.0rem">
+        <span style="color: red;" *ngIf="form.get('sendText')?.errors?.['required']">*You must select.</span>
+      </div>
+      <br>
+
+    </div>
+  </div>
+  <div class="button">
+    <button [disabled]="form.invalid" (click)="PlaceOrder()">Place order</button>
+  </div>
+  <hr>
+</form>
+
+<div class="show" [hidden]="bill">
+  <!-- <h1>Conclude</h1> -->
+  <div class="detail">
+    <p>Order information : {{formObj | json}}</p>
+    <p>Date : {{date | date: "dd/MM/yyyy"}}</p>
+    <p>Time : {{date | date: "HH:mm:ss"}}</p>
+  </div>
+</div>
